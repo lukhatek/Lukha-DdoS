@@ -15,7 +15,7 @@ def print_banner():
  | |____ _| |_| |\  |  | |  | |     
  |______|_____|_| \_|  |_|  |_|     
 \033[0m
-\033[93m>>> Ethical DDoS Testing Tool <<<\033[0m
+\033[93m>>> Lukha Sizlere Sunar...<<<\033[0m
 """
     print(banner)
 
