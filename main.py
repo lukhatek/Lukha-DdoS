@@ -19,18 +19,16 @@ def print_banner():
 """
     print(banner)
 
-def main_menu():
-    while True:
-        clear()
-        print_banner()
-        print("╔════════════════════════╗")
-        print("║      LUKHA BOMBER      ║")
-        print("╠════════════════════════╣")
-        print("║ 1. DDoS Saldırısı Başlat ║")
-        print("║ 2. Gereksinimleri Yükle  ║")
-        print("║ 3. Çıkış                 ║")
-        print("╚════════════════════════╝")
-        choice = input("\nSeçiminiz (1-3): ").strip()
+def print_colored_menu():
+    print("\033[91m╔════════════════════════╗")  # Parlak kırmızı
+    print("\033[91m║      \033[93mLUKHA BOMBER\033[91m      ║")  # Sarı metin, kenarlık kırmızı
+    print("\033[91m╠════════════════════════╣")
+    print("\033[91m║ \033[95m1.\033[91m \033[97mDDoS Saldırısı Başlat\033[91m ║")  # Mor numara, beyaz metin
+    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle\033[91m  ║")
+    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış               \033[91m║")
+    print("\033[91m╚════════════════════════╝\033[0m")  # Kapatma renk
+
+choice = input("\nSeçiminiz (1-3): ").strip()
 
         if choice == "1":
             start_attack()
