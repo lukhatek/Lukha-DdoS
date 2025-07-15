@@ -24,11 +24,11 @@ def print_banner():
 
 def print_menu():
     print("\033[91m╔═════════════════════════╗")
-    print("\033[91m║      \033[93mLUKHA BOMBER\033[91m      ║")
+    print("\033[91m║      \033[93mLUKHA BOMBER\033[91m       ║")
     print("\033[91m╠═════════════════════════╣")
     print("\033[91m║ \033[95m1.\033[91m \033[97mDdoS Saldırısı Başlat\033[91m║")
-    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle\033[91m║")
-    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış               \033[91m║")
+    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle\033[91m ║")
+    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış               \033[91m ║")
     print("\033[91m╚═════════════════════════╝\033[0m")
 
 def install_requirements():
@@ -81,7 +81,6 @@ def main():
                 time.sleep(1.5)
                 continue
 
-            # Burada Lukha.py içindeki LukhaBomber sınıfını import edip kullanmalısın
             try:
                 from lukha import LukhaBomber
             except ImportError:
