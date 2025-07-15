@@ -25,9 +25,9 @@ def print_menu():
     print("\033[91m╔═════════════════════════╗")
     print("\033[91m║      \033[93mLUKHA BOMBER\033[91m       ║")
     print("\033[91m╠═════════════════════════╣")
-    print("\033[91m║ \033[95m1.\033[91m \033[97mDDoS Saldırısı Başlat    \033[91m║")
-    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle    \033[91m║")
-    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış                  \033[91m║")
+    print("\033[91m║ \033[95m1.\033[91m \033[97mDDoS Saldırısı Başlat \033[91m║")
+    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle  \033[91m║")
+    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış                 \033[91m║")
     print("\033[91m╚═════════════════════════╝\033[0m")
 
 def print_attack_types():
