@@ -12,7 +12,7 @@ BANNER = """
  | |____ _| |_| |\  |  | |  | |     
  |______|_____|_| \_|  |_|  |_|     
 \033[0m
-\033[93m>>> Lukha Sizlere Sunar... <<<\033[0m
+\033[93m>>> Etik test amacli ddos <<<\033[0m
 """
 
 def clear_screen():
