@@ -12,7 +12,7 @@ BANNER = """
  | |____ _| |_| |\  |  | |  | |     
  |______|_____|_| \_|  |_|  |_|     
 \033[0m
-\033[93m>>> Ethical DDoS Testing Tool <<<\033[0m
+\033[93m>>> Lukha Sizlere Sunar... <<<\033[0m
 """
 
 def clear_screen():
@@ -43,16 +43,17 @@ def install_requirements():
     print("\033[92mYükleme tamamlandı!\033[0m")
     input("Devam etmek için Enter'a basın...")
 
-def get_input(prompt, default=None, is_int=False):
+def get_input(prompt, default=None, is_int=False, allow_zero=False):
     while True:
         val = input(f"\033[96m{prompt}\033[0m").strip()
         if val == "" and default is not None:
             return default
         if is_int:
-            if val.isdigit() and int(val) > 0:
-                return int(val)
-            else:
-                print("\033[91mLütfen geçerli pozitif bir sayı girin.\033[0m")
+            if val.isdigit():
+                iv = int(val)
+                if iv > 0 or (allow_zero and iv == 0):
+                    return iv
+            print("\033[91mLütfen geçerli pozitif bir sayı girin (0 sonsuz için geçerli).\033[0m")
         else:
             return val
 
@@ -67,7 +68,7 @@ def main():
             target = get_input("Hedef IP veya Domain (örnek: example.com): ")
             port = get_input("Port numarası (default 80): ", default=80, is_int=True)
             threads = get_input("Thread sayısı (default 200): ", default=200, is_int=True)
-            total_requests = get_input("Toplam gönderilecek paket sayısı: ", is_int=True)
+            total_requests = get_input("Toplam gönderilecek paket sayısı (0 = sonsuz): ", is_int=True, allow_zero=True)
 
             print_attack_types()
             attack_choice = input("\033[95mSeçiminiz (1-4): \033[0m").strip()
@@ -87,6 +88,8 @@ def main():
                 time.sleep(1.5)
                 continue
 
+            proxy_type = input("\033[96mProxy tipi (socks4/socks5, default socks5): \033[0m").strip().lower() or "socks5"
+
             try:
                 from lukha import LukhaBomber
             except ImportError:
@@ -94,7 +97,7 @@ def main():
                 input("Devam etmek için Enter'a basın...")
                 continue
 
-            bomber = LukhaBomber(target, port, threads, total_requests, "socks5", attack_target)
+            bomber = LukhaBomber(target, port, threads, total_requests, proxy_type, attack_target)
             print("\n\033[93mSaldırı başlatılıyor... Ctrl+C ile durdurabilirsiniz.\033[0m")
             bomber.start()
             input("\nDevam etmek için Enter'a basın...")
