@@ -1,7 +1,7 @@
 import os
 import sys
 import time
-import lukha  
+import lukha
 
 def install_requirements():
     print("\nGereksinimler yükleniyor...")
@@ -27,7 +27,7 @@ def start_attack():
     elif choice == "2":
         attack_target = "minecraft"
         if port == 80:
-            port = 25565  
+            port = 25565
     else:
         print("Geçersiz seçim!")
         return
@@ -40,7 +40,7 @@ def main_menu():
         os.system('cls' if os.name == 'nt' else 'clear')
         print("""
 ╔════════════════════════════╗
-║         LUKHA BOMBER v3         ║
+║         LUKHA BOMBER v4         ║
 ╠════════════════════════════╣
 ║ 1. DDoS Saldırısı Başlat        ║
 ║ 2. Gereksinimleri Yükle         ║
