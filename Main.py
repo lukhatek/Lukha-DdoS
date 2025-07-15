@@ -40,11 +40,11 @@ def main_menu():
         os.system('cls' if os.name == 'nt' else 'clear')
         print("""
 ╔════════════════════════════╗
-║         LUKHA BOMBER v4         ║
+║        LUKHA BOMBER v4        ║
 ╠════════════════════════════╣
-║ 1. DDoS Saldırısı Başlat        ║
-║ 2. Gereksinimleri Yükle         ║
-║ 3. Çıkış                        ║
+║ 1. DDoS Saldırısı Başlat      ║
+║ 2. Gereksinimleri Yükle       ║
+║ 3. Çıkış                      ║
 ╚════════════════════════════╝
 """)
         choice = input("Seçiminiz (1-3): ")
