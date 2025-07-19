@@ -29,8 +29,8 @@ def show_banner():
     ███████╗██║██║  ██║██║  ██║    ██████╔╝██║  ██║██████╔╝   ██║   
     ╚══════╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═════╝    ╚═╝   
     {colors.CYAN}
-    Termux için Proxy Destekli DDoS Aracı v3.0
-    {colors.YELLOW}Developer: @LilaSaviorTeam | Lila için mücadele!
+    Lukha tarafından Termux için DDoS Aracı v3.0
+    {colors.YELLOW}Developer: @Lukhaskr | Toplum için mücadele!
     {colors.RESET}""")
 
 # Proxy yükleme
