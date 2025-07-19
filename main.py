@@ -20,14 +20,14 @@ class colors:
 def show_banner():
     os.system('clear')
     print(f"""{colors.CYAN}{colors.BOLD}
-    ██╗     ██╗██╗  ██╗ █████╗ 
-    ██║     ██║██║  ██║██╔══██╗
-    ██║     ██║███████║███████║
-    ██║     ██║██╔══██║██╔══██║
-    ███████╗██║██║  ██║██║  ██║
-    ╚══════╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+    ██╗     ██╗   ██╗██╗  ██╗██╗  ██╗ █████╗ 
+    ██║     ██║   ██║██║ ██╔╝██║  ██║██╔══██╗
+    ██║     ██║   ██║█████╔╝ ███████║███████║
+    ██║     ██║   ██║██╔═██╗ ██╔══██║██╔══██║
+    ███████╗╚██████╔╝██║  ██╗██║  ██║██║  ██║
+    ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
     {colors.RESET}{colors.YELLOW}
-    [Ultra Hızlı Mode] - Lila için!
+    [Ultra Hızlı Mode] - Lukha için!
     {colors.RESET}""")
 
 # Socket tabanlı saldırı (en hızlı yöntem)
@@ -108,7 +108,7 @@ def start_attack():
     try:
         while True: time.sleep(1)
     except KeyboardInterrupt:
-        print(f"\n{colors.YELLOW}[!] Lila için saldırı durduruldu!{colors.RESET}")
+        print(f"\n{colors.YELLOW}[!] Lukha için saldırı durduruldu!{colors.RESET}")
         sys.exit(0)
 
 # Global ayarlar
